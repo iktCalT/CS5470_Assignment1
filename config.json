@@ -1,0 +1,12 @@
+{
+  "netid": "zz986",
+  "cfg_hash": "122863a3",
+  "seed": 28162,
+  "request_rate": 12,
+  "num_prompts": 150,
+  "long_prompts": 5,
+  "long_prompt_len": 16000,
+  "max_num_batched_tokens": 512,
+  "max_num_seqs": 128,
+  "model": "meta-llama/Llama-3.1-8B"
+}

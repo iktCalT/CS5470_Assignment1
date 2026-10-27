@@ -11,37 +11,37 @@ def main():
         print("Usage: python analyze.py <path_to_result_folder>")
         sys.exit(1)
 
+    tags = ["tp1", "tp2", "tp4", "probe"]
     folder = Path(sys.argv[1])
-    files = {
-        "tp1": list(folder.rglob("*tp1*.json")),
-        "tp2": list(folder.rglob("*tp2*.json")),
-        "tp4": list(folder.rglob("*tp4*.json")),
-    }
+    files: dict = {}
+    
+    for tag in tags:
+        files.update({tag: list(folder.rglob("*{}*.json".format(tag)))})
+        if not tag in files:
+            print("File '*-{}-*' not found in {}\n".format(tag, folder))
+            continue
 
     fig_ttft, ax_ttft = plt.subplots()
     fig_tpot, ax_tpot = plt.subplots()
     fig_itl, ax_itl = plt.subplots()
     
-    for tag in ["tp1", "tp2", "tp4"]:
+    for tag, file in files.items():
         print("----- {} -----".format(tag))
-        if len(files[tag]) == 0:
-            print("File named '*{}*' not found in {}".format(tag, folder))
-            sys.exit(2)
 
-        with open(files[tag][0]) as f: # Only care about first file
+        with open(file[0]) as f: # Only care about first file
             data: dict = json.load(f)
             
         analyze(data, tag, ax_ttft, ax_tpot, ax_itl)
         print()
         
     ax_ttft.set_title("TTFT distribution")
-    fig_ttft.savefig("ttft.png", dpi=300)
+    fig_ttft.savefig("./imgs/ttft.png", dpi=300)
     
     ax_tpot.set_title("TPOT distribution")
-    fig_tpot.savefig("tpot.png", dpi=300)
+    fig_tpot.savefig("./imgs/tpot.png", dpi=300)
 
     ax_itl.set_title("ITL distribution")
-    fig_itl.savefig("itl.png", dpi=300)
+    fig_itl.savefig("./imgs/itl.png", dpi=300)
 
 
 def analyze(data, tag, ax_ttft, ax_tpot, ax_itl):
@@ -110,7 +110,7 @@ def seperate_plot(y, label, tag):
     ax.legend()
 
     ax.set_title("{} distribution".format(label))
-    fig.savefig("{}_{}.png".format(tag, label), dpi=300)
+    fig.savefig("./imgs/{}_{}.png".format(tag, label), dpi=300)
     
     
 if __name__ == "__main__":

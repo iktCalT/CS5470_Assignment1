@@ -1,0 +1,49 @@
+{
+  "netid": "zz986",
+  "cfg_hash": "122863a3",
+
+  "baseline": {
+    "tp1": {"ttft_p50_ms": 93.29, "ttft_p99_ms": 1217.13,
+            "tpot_p50_ms": 43.25, "tpot_p99_ms": 57.82,
+            "output_throughput_tok_s": 1461.15,
+            "request_throughput_req_s": 3.79,
+            "gpu_kv_cache_blocks": 10209},
+    "tp2": {"ttft_p50_ms": 64.14, "ttft_p99_ms": 740.95,
+            "tpot_p50_ms": 28.41, "tpot_p99_ms": 38.71,
+            "output_throughput_tok_s": 1656.53,
+            "request_throughput_req_s": 4.29,
+            "gpu_kv_cache_blocks": 27648},
+    "tp4": {"ttft_p50_ms": 55.76, "ttft_p99_ms": 537.56,
+            "tpot_p50_ms": 28.13, "tpot_p99_ms": 31.12,
+            "output_throughput_tok_s": 1764.54,
+            "request_throughput_req_s": 4.57,
+            "gpu_kv_cache_blocks": 61614}
+  },
+
+  "scaling": {
+    "ttft_p99_ratio_tp2_over_tp1": 0.6088,
+    "ttft_p99_ratio_tp4_over_tp1": 0.4227,
+    "tpot_p50_ratio_tp4_over_tp1": 0.5188
+  },
+
+  "profile": {
+    "top3_kernels": [
+      {"name": "vllm::cross_device_reduce_1stage", "total_time_ns": 55135559971, "pct_of_kernel_time": 40.4},
+      {"name": "flash::flash_fwd_splitkv_kernel", "total_time_ns": 10569525290, "pct_of_kernel_time": 7.8},
+      {"name": "flash::flash_fwd_splitkv_kernel", "total_time_ns": 9468368455, "pct_of_kernel_time": 6.9}
+    ],
+    "allreduce_kernel_name": "vllm::cross_device_reduce_1stage",
+    "allreduce_pct_of_kernel_time": 45.9
+  },
+
+  "probe": {
+    "hypothesis_id": "H2",
+    "tp": 4,
+    "knob_changed": "max_num_batched_tokens",
+    "baseline_value": 512,
+    "new_value": 2048,
+    "ttft_p99_ms": 195.88,
+    "tpot_p50_ms": 21.17,
+    "supports_hypothesis": true
+  }
+}
